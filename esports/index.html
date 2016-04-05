@@ -13,10 +13,13 @@ canvas {
 <script>
 
     var myGamePiece;
-    var myObstacles = [];
-    
+    var deathText;
+    var myLeftObstacles = []; 
+    var myRightObstacles = [];
+    var myDownObstacles = []; 
+    var myUpObstacles = [];
     function startGame() {
-        myGamePiece = new component(30, 30, "rgb(0, 101, 232)", 10, 120);
+        myGamePiece = new component(30, 30, "rgb(0, 101, 232)", 225, 120);
         myGameArea.start();
     }
     
@@ -81,41 +84,96 @@ canvas {
     
 function updateGameArea() {
     var x, y;
-    for (i = 0; i < myObstacles.length; i += 1) {
-        if (myGamePiece.crashWith(myObstacles[i])) {
+    for (i = 0; i < myLeftObstacles.length; i++) {
+        if (myGamePiece.crashWith(myLeftObstacles[i])) {
             myGameArea.stop();
-            document.write("R.I.P");
+            return;
+        } 
+    }
+    for (i = 0; i < myDownObstacles.length; i++){
+        if (myGamePiece.crashWith(myDownObstacles[i])) {
+            myGameArea.stop();
+            return;
+        }
+    }
+    for (i = 0; i < myRightObstacles.length; i++){
+        if (myGamePiece.crashWith(myRightObstacles[i])){
+            myGameArea.stop();
+            return;
+        }
+    }
+    for (i = 0; i < myUpObstacles.length; i++) {
+        if (myGamePiece.crashWith(myUpObstacles[i])) {
+            myGameArea.stop();
             return;
         } 
     }
     myGameArea.clear();
     myGameArea.frameNo += 1;
-    if (myGameArea.frameNo == 1 || everyinterval(50)) {
-        x = myGameArea.canvas.width;
+    if (myGameArea.frameNo == 1 || everyinterval(75)) {
         minSpawn = 0;
         maxSpawn = 210;
         loc = Math.floor(Math.random()*(maxSpawn-minSpawn+1)+minSpawn);
-        myObstacles.push(new component(60, 60, "rgb(217, 0, 0)", 480, loc));
+        myLeftObstacles.push(new component(60, 60, "rgb(217, 0, 0)", 480, loc)); //
+        loc = Math.floor(Math.random()*(maxSpawn-minSpawn+1)+minSpawn);
+        myRightObstacles.push(new component(60, 60, "rgb(217, 0, 0)", -60, loc));
+        minSpawn = 0;
+        maxSpawn = 420;
+        loc = Math.floor(Math.random()*(maxSpawn-minSpawn+1)+minSpawn);
+        myDownObstacles.push(new component(60, 60, "rgb(217, 0, 0)", loc, -60));
+        loc = Math.floor(Math.random()*(maxSpawn-minSpawn+1)+minSpawn);
+        myUpObstacles.push(new component(60, 60, "rgb(217, 0, 0)", loc, 270));
     }
-    for (i = 0; i < myObstacles.length; i += 1) {
-        myObstacles[i].x += -3;
-        myObstacles[i].update();
+    /*
+        if (myGameArea.frameNo == 1 || everyinterval(75)) {
+        minSpawn = 0;
+        maxSpawn = 420;
+        loc = Math.floor(Math.random()*(maxSpawn-minSpawn+1)+minSpawn);
+        myDownObstacles.push(new component(60, 60, "rgb(217, 0, 0)", loc, -60));
+    }
+    if (myGameArea.frameNo == 1 || everyinterval(75)) {
+        minSpawn = 0;
+        maxSpawn = 210;
+        loc = Math.floor(Math.random()*(maxSpawn-minSpawn+1)+minSpawn);
+        myRightObstacles.push(new component(60, 60, "rgb(217, 0, 0)", -60, loc));
+    }
+    if (myGameArea.frameNo == 1 || everyinterval(75)) {
+        minSpawn = 0;
+        maxSpawn = 420;
+        loc = Math.floor(Math.random()*(maxSpawn-minSpawn+1)+minSpawn);
+        myUpObstacles.push(new component(60, 60, "rgb(217, 0, 0)", loc, 480));
+    }*/
+    for (i = 0; i < myLeftObstacles.length; i++) {
+        myLeftObstacles[i].x += -3;
+        myLeftObstacles[i].update();
+    }
+    for (i = 0; i < myDownObstacles.length; i++) {
+        myDownObstacles[i].y += 3;
+        myDownObstacles[i].update();
+    }
+    for (i = 0; i < myRightObstacles.length; i++) {
+        myRightObstacles[i].x += 3;
+        myRightObstacles[i].update();
+    }
+    for (i = 0; i < myUpObstacles.length; i++) {
+        myUpObstacles[i].y += -3;
+        myUpObstacles[i].update();
     }
         //myGameArea.clear();
         myGamePiece.speedX = 0;
         myGamePiece.speedY = 0; 
     
         if (myGamePiece.y > 0){      
-            if (myGameArea.keys && myGameArea.keys[38]) {myGamePiece.speedY = -2; }
+            if (myGameArea.keys && myGameArea.keys[38]) {myGamePiece.speedY = -2.5; }
         }
         if (myGamePiece.y + myGamePiece.height < 270){
-            if (myGameArea.keys && myGameArea.keys[40]) {myGamePiece.speedY = 2; }
+            if (myGameArea.keys && myGameArea.keys[40]) {myGamePiece.speedY = 2.5; }
         }
         if (myGamePiece.x > 0) {
-            if (myGameArea.keys && myGameArea.keys[37]) {myGamePiece.speedX = -2; }
+            if (myGameArea.keys && myGameArea.keys[37]) {myGamePiece.speedX = -2.5; }
         }
         if (myGamePiece.x + myGamePiece.width < 480){
-            if (myGameArea.keys && myGameArea.keys[39]) {myGamePiece.speedX = 2; }
+            if (myGameArea.keys && myGameArea.keys[39]) {myGamePiece.speedX = 2.5; }
         }
 
 
@@ -168,7 +226,8 @@ function updateGameArea() {
     -->
     <div style = "text-align:center; width:480px;">
     <p>UP DOWN LEFT RIGHT TO MOVE BITCH</p><br>
-    <p> DONT DIE HAHAHAHA JUST KIDDING YOU'RE GONNA DIE</p>
+    <p> DONT DIE HAHAHAHA JUST KIDDING YOU'RE GONNA DIE</p><br>
+    <p>REFRESH TO RESTART BECAUSE FUCK YOU</p>
     </div>
 </body>   
 </html>
