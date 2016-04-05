@@ -3,14 +3,20 @@
 <head>   
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>    
 <style>
-canvas {
-    border: 1px solid #d3d3d3;
-    background-color: #f1f1f1;
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
-}
-
+    canvas {
+        border: 5px solid #d3d3d3;
+        /*background-color: #f1f1f1;*/
+        background-color: black;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+    }
+    body {
+        background-color: black;
+    }
+    p {
+        color : white;
+    }
 </style>    
 </head>   
 <body onload="startGame()">
@@ -68,105 +74,100 @@ canvas {
             this.x += this.speedX;
             this.y += this.speedY;
         }
-    this.crashWith = function(otherobj) {
-        var myleft = this.x;
-        var myright = this.x + (this.width);
-        var mytop = this.y;
-        var mybottom = this.y + (this.height);
-        var otherleft = otherobj.x;
-        var otherright = otherobj.x + (otherobj.width);
-        var othertop = otherobj.y;
-        var otherbottom = otherobj.y + (otherobj.height);
-        var crash = true;
-        if ((mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright)) {
-            crash = false;
+        this.crashWith = function(otherobj) {
+            var myleft = this.x;
+            var myright = this.x + (this.width);
+            var mytop = this.y;
+            var mybottom = this.y + (this.height);
+            var otherleft = otherobj.x;
+            var otherright = otherobj.x + (otherobj.width);
+            var othertop = otherobj.y;
+            var otherbottom = otherobj.y + (otherobj.height);
+            var crash = true;
+            if ((mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright)) {
+                crash = false;
+            }
+            return crash;
         }
-        return crash;
-    }
-
     }
     
-function updateGameArea() {
-    var x, y;
-    for (i = 0; i < myLeftObstacles.length; i++) {
-        if (myGamePiece.crashWith(myLeftObstacles[i])) {
-            myGameArea.stop();
-            window.location = self.location;
-        } 
-    }
-    for (i = 0; i < myDownObstacles.length; i++){
-        if (myGamePiece.crashWith(myDownObstacles[i])) {
-            myGameArea.stop();
-            window.location = self.location;
+    function updateGameArea() {
+        var x, y;
+        for (i = 0; i < myLeftObstacles.length; i++) {
+            if (myGamePiece.crashWith(myLeftObstacles[i])) {
+                myGameArea.stop();
+                window.location = self.location;
+            } 
         }
-    }
-    for (i = 0; i < myRightObstacles.length; i++){
-        if (myGamePiece.crashWith(myRightObstacles[i])){
-            myGameArea.stop();
-            window.location = self.location;
+        for (i = 0; i < myDownObstacles.length; i++){
+            if (myGamePiece.crashWith(myDownObstacles[i])) {
+                myGameArea.stop();
+                window.location = self.location;
+            }
         }
-    }
-    for (i = 0; i < myUpObstacles.length; i++) {
-        if (myGamePiece.crashWith(myUpObstacles[i])) {
-            myGameArea.stop();
-            window.location = self.location;
-        } 
-    }
-    myGameArea.clear();
-    myGameArea.frameNo += 1;
-    if (myGameArea.frameNo == 1 || everyinterval(75)) {
-        minSpawn = 0;
-        maxSpawn = 420;
-        loc = Math.floor(Math.random()*(maxSpawn-minSpawn+1)+minSpawn);
-        myLeftObstacles.push(new component(60, 60, "rgb(217, 0, 0)", 480, loc)); //
-        loc = Math.floor(Math.random()*(maxSpawn-minSpawn+1)+minSpawn);
-        myRightObstacles.push(new component(60, 60, "rgb(217, 0, 0)", -60, loc));
-        minSpawn = 0;
-        maxSpawn = 420;
-        loc = Math.floor(Math.random()*(maxSpawn-minSpawn+1)+minSpawn);
-        myDownObstacles.push(new component(60, 60, "rgb(217, 0, 0)", loc, -60));
-        loc = Math.floor(Math.random()*(maxSpawn-minSpawn+1)+minSpawn);
-        myUpObstacles.push(new component(60, 60, "rgb(217, 0, 0)", loc, 480));
-    }
-    for (i = 0; i < myLeftObstacles.length; i++) {
-        myLeftObstacles[i].x += -3;
-        myLeftObstacles[i].update();
-    }
-    for (i = 0; i < myDownObstacles.length; i++) {
-        myDownObstacles[i].y += 3;
-        myDownObstacles[i].update();
-    }
-    for (i = 0; i < myRightObstacles.length; i++) {
-        myRightObstacles[i].x += 3;
-        myRightObstacles[i].update();
-    }
-    for (i = 0; i < myUpObstacles.length; i++) {
-        myUpObstacles[i].y += -3;
-        myUpObstacles[i].update();
-    }
-        myGamePiece.speedX = 0;
-        myGamePiece.speedY = 0; 
-    
-        if (myGamePiece.y > 0){      
-            if (myGameArea.keys && myGameArea.keys[38]) {myGamePiece.speedY = -2.5; }
+        for (i = 0; i < myRightObstacles.length; i++){
+            if (myGamePiece.crashWith(myRightObstacles[i])){
+                myGameArea.stop();
+                window.location = self.location;
+            }
         }
-        if (myGamePiece.y + myGamePiece.height < 480){
-            if (myGameArea.keys && myGameArea.keys[40]) {myGamePiece.speedY = 2.5; }
+        for (i = 0; i < myUpObstacles.length; i++) {
+            if (myGamePiece.crashWith(myUpObstacles[i])) {
+                myGameArea.stop();
+                window.location = self.location;
+            } 
         }
-        if (myGamePiece.x > 0) {
-            if (myGameArea.keys && myGameArea.keys[37]) {myGamePiece.speedX = -2.5; }
+        myGameArea.clear();
+        myGameArea.frameNo += 1;
+        if (myGameArea.frameNo == 1 || everyinterval(75)) {
+            minSpawn = 0;
+            maxSpawn = 420;
+            loc = Math.floor(Math.random()*(maxSpawn-minSpawn+1)+minSpawn);
+            myLeftObstacles.push(new component(60, 60, "rgb(217, 0, 0)", 480, loc)); //
+            loc = Math.floor(Math.random()*(maxSpawn-minSpawn+1)+minSpawn);
+            myRightObstacles.push(new component(60, 60, "rgb(217, 0, 0)", -60, loc));
+            minSpawn = 0;
+            maxSpawn = 420;
+            loc = Math.floor(Math.random()*(maxSpawn-minSpawn+1)+minSpawn);
+            myDownObstacles.push(new component(60, 60, "rgb(217, 0, 0)", loc, -60));
+            loc = Math.floor(Math.random()*(maxSpawn-minSpawn+1)+minSpawn);
+            myUpObstacles.push(new component(60, 60, "rgb(217, 0, 0)", loc, 480));
         }
-        if (myGamePiece.x + myGamePiece.width < 480){
-            if (myGameArea.keys && myGameArea.keys[39]) {myGamePiece.speedX = 2.5; }
+        for (i = 0; i < myLeftObstacles.length; i++) {
+            myLeftObstacles[i].x += -3;
+            myLeftObstacles[i].update();
         }
+        for (i = 0; i < myDownObstacles.length; i++) {
+            myDownObstacles[i].y += 3;
+            myDownObstacles[i].update();
+        }
+        for (i = 0; i < myRightObstacles.length; i++) {
+            myRightObstacles[i].x += 3;
+            myRightObstacles[i].update();
+        }
+        for (i = 0; i < myUpObstacles.length; i++) {
+            myUpObstacles[i].y += -3;
+            myUpObstacles[i].update();
+        }
+            myGamePiece.speedX = 0;
+            myGamePiece.speedY = 0; 
 
+            if (myGamePiece.y > 0){      
+                if (myGameArea.keys && myGameArea.keys[38]) {myGamePiece.speedY = -2.5; }
+            }
+            if (myGamePiece.y + myGamePiece.height < 480){
+                if (myGameArea.keys && myGameArea.keys[40]) {myGamePiece.speedY = 2.5; }
+            }
+            if (myGamePiece.x > 0) {
+                if (myGameArea.keys && myGameArea.keys[37]) {myGamePiece.speedX = -2.5; }
+            }
+            if (myGamePiece.x + myGamePiece.width < 480){
+                if (myGameArea.keys && myGameArea.keys[39]) {myGamePiece.speedX = 2.5; }
+            }
 
-
-        
-        myGamePiece.newPos();
-        myGamePiece.update();
-        }
-    
+            myGamePiece.newPos();
+            myGamePiece.update();
+    }
     
     function everyinterval(n) {
         if ((myGameArea.frameNo / n) % 1 == 0) {return true;}
