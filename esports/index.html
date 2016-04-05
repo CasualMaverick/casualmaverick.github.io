@@ -86,21 +86,25 @@ function updateGameArea() {
     var x, y;
     for (i = 0; i < myLeftObstacles.length; i++) {
         if (myGamePiece.crashWith(myLeftObstacles[i])) {
+            myGameArea.stop();
             window.location = self.location;
         } 
     }
     for (i = 0; i < myDownObstacles.length; i++){
         if (myGamePiece.crashWith(myDownObstacles[i])) {
+            myGameArea.stop();
             window.location = self.location;
         }
     }
     for (i = 0; i < myRightObstacles.length; i++){
         if (myGamePiece.crashWith(myRightObstacles[i])){
+            myGameArea.stop();
             window.location = self.location;
         }
     }
     for (i = 0; i < myUpObstacles.length; i++) {
         if (myGamePiece.crashWith(myUpObstacles[i])) {
+            myGameArea.stop();
             window.location = self.location;
         } 
     }
