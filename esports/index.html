@@ -13,11 +13,10 @@ canvas {
 <script>
 
     var myGamePiece;
-    var myObstacle;
+    var myObstacles = [];
     
     function startGame() {
         myGamePiece = new component(30, 30, "magenta", 10, 120);
-        myObstacle = new component(10, 200, "green", 300, 120);
         myGameArea.start();
     }
     
@@ -28,6 +27,7 @@ canvas {
             this.canvas.height = 270;
             this.context = this.canvas.getContext("2d");
             document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+            this.frameNo = 0;
             this.interval = setInterval(updateGameArea, 20);
             window.addEventListener('keydown', function (e) {
                 myGameArea.keys = (myGameArea.keys || []);
@@ -61,42 +61,58 @@ canvas {
             this.x += this.speedX;
             this.y += this.speedY;
         }
-        this.crashWith = function(otherobj){
-            var myleft = this.x;
-            var myright = this.x + (this.width);
-            var mytop = this.y;
-            var mybottom = this.y + (this.height);
-            var otherleft = otherobj.x;
-            var otherright = otherobj.x + (otherobj.width);
-            var othertop = otherobj.y;
-            var otherbottom = otherobj.y + (otherobj.height);
-            var crash = true;
-            if ((mybottom < othertop) ||
-               (mytop > otherbottom) ||
-               (myright < otherleft) ||
-                (myleft > otherright)) {
-                    crash = false
-                }
-            return crash;
+    this.crashWith = function(otherobj) {
+        var myleft = this.x;
+        var myright = this.x + (this.width);
+        var mytop = this.y;
+        var mybottom = this.y + (this.height);
+        var otherleft = otherobj.x;
+        var otherright = otherobj.x + (otherobj.width);
+        var othertop = otherobj.y;
+        var otherbottom = otherobj.y + (otherobj.height);
+        var crash = true;
+        if ((mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright)) {
+            crash = false;
         }
+        return crash;
+    }
 
     }
     
-    function updateGameArea(){
-        if (myGamePiece.crashWith(myObstacle)) {
+function updateGameArea() {
+    var x, y;
+    for (i = 0; i < myObstacles.length; i += 1) {
+        if (myGamePiece.crashWith(myObstacles[i])) {
             myGameArea.stop();
-        } else {
-        myGameArea.clear();
+            return;
+        } 
+    }
+    myGameArea.clear();
+    myGameArea.frameNo += 1;
+    if (myGameArea.frameNo == 1 || everyinterval(150)) {
+        x = myGameArea.canvas.width;
+        y = myGameArea.canvas.height - 200;
+        myObstacles.push(new component(10, 200, "green", x, y));
+    }
+    for (i = 0; i < myObstacles.length; i += 1) {
+        myObstacles[i].x += -1;
+        myObstacles[i].update();
+    }
+        //myGameArea.clear();
         myGamePiece.speedX = 0;
         myGamePiece.speedY = 0; 
-        if (myGameArea.keys && myGameArea.keys[37]) {myGamePiece.speedX = -1; }
-        if (myGameArea.keys && myGameArea.keys[39]) {myGamePiece.speedX = 1; }
-        if (myGameArea.keys && myGameArea.keys[38]) {myGamePiece.speedY = -1; }
-        if (myGameArea.keys && myGameArea.keys[40]) {myGamePiece.speedY = 1; }
+        if (myGameArea.keys && myGameArea.keys[37]) {myGamePiece.speedX = -2; }
+        if (myGameArea.keys && myGameArea.keys[39]) {myGamePiece.speedX = 2; }
+        if (myGameArea.keys && myGameArea.keys[38]) {myGamePiece.speedY = -2; }
+        if (myGameArea.keys && myGameArea.keys[40]) {myGamePiece.speedY = 2; }
         myGamePiece.newPos();
         myGamePiece.update();
-        myObstacle.update();
         }
+    
+    
+    function everyinterval(n) {
+        if ((myGameArea.frameNo / n) % 1 == 0) {return true;}
+        return false;
     }
 /*
     function moveUp()
@@ -134,5 +150,9 @@ canvas {
 <button onmousedown="moveDown()" onmouseup="stopMove()" ontouchstart = "moveDown()">DOWN</button>
 </div> 
     -->
+    <div style = "text-align:center; width:480px;">
+    <p>UP DOWN LEFT RIGHT TO MOVE BITCH</p><br>
+    <p> DONT DIE HAHAHAHA JUST KIDDING YOU'RE GONNA DIE</p>
+    </div>
 </body>   
 </html>
