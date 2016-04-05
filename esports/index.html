@@ -86,26 +86,22 @@ function updateGameArea() {
     var x, y;
     for (i = 0; i < myLeftObstacles.length; i++) {
         if (myGamePiece.crashWith(myLeftObstacles[i])) {
-            myGameArea.stop();
-            return;
+            location.reload();
         } 
     }
     for (i = 0; i < myDownObstacles.length; i++){
         if (myGamePiece.crashWith(myDownObstacles[i])) {
-            myGameArea.stop();
-            return;
+            location.reload();
         }
     }
     for (i = 0; i < myRightObstacles.length; i++){
         if (myGamePiece.crashWith(myRightObstacles[i])){
-            myGameArea.stop();
-            return;
+            location.reload();
         }
     }
     for (i = 0; i < myUpObstacles.length; i++) {
         if (myGamePiece.crashWith(myUpObstacles[i])) {
-            myGameArea.stop();
-            return;
+            location.reload();
         } 
     }
     myGameArea.clear();
@@ -124,25 +120,6 @@ function updateGameArea() {
         loc = Math.floor(Math.random()*(maxSpawn-minSpawn+1)+minSpawn);
         myUpObstacles.push(new component(60, 60, "rgb(217, 0, 0)", loc, 270));
     }
-    /*
-        if (myGameArea.frameNo == 1 || everyinterval(75)) {
-        minSpawn = 0;
-        maxSpawn = 420;
-        loc = Math.floor(Math.random()*(maxSpawn-minSpawn+1)+minSpawn);
-        myDownObstacles.push(new component(60, 60, "rgb(217, 0, 0)", loc, -60));
-    }
-    if (myGameArea.frameNo == 1 || everyinterval(75)) {
-        minSpawn = 0;
-        maxSpawn = 210;
-        loc = Math.floor(Math.random()*(maxSpawn-minSpawn+1)+minSpawn);
-        myRightObstacles.push(new component(60, 60, "rgb(217, 0, 0)", -60, loc));
-    }
-    if (myGameArea.frameNo == 1 || everyinterval(75)) {
-        minSpawn = 0;
-        maxSpawn = 420;
-        loc = Math.floor(Math.random()*(maxSpawn-minSpawn+1)+minSpawn);
-        myUpObstacles.push(new component(60, 60, "rgb(217, 0, 0)", loc, 480));
-    }*/
     for (i = 0; i < myLeftObstacles.length; i++) {
         myLeftObstacles[i].x += -3;
         myLeftObstacles[i].update();
@@ -159,7 +136,6 @@ function updateGameArea() {
         myUpObstacles[i].y += -3;
         myUpObstacles[i].update();
     }
-        //myGameArea.clear();
         myGamePiece.speedX = 0;
         myGamePiece.speedY = 0; 
     
@@ -188,46 +164,11 @@ function updateGameArea() {
         if ((myGameArea.frameNo / n) % 1 == 0) {return true;}
         return false;
     }
-/*
-    function moveUp()
-    {
-        myGamePiece.speedY -= 1;
-    
-    }
-    function moveDown()
-    {
-        myGamePiece.speedY += 1;
-    
-    }
-    function moveLeft()
-    {
-        myGamePiece.speedX -= 1;
-    
-    }
-    function moveRight()
-    {
-        myGamePiece.speedX += 1;
-    
-    }
-    function stopMove()
-    {
-        myGamePiece.speedX = 0;
-        myGamePiece.speedY = 0;
-    }
-*/
+
 </script>
-    <!--
-<div style = text-align:center;width:480px;">                                         
-<button onmousedown="moveUp()" onmouseup="stopMove()" ontouchstart = "moveUp()">UP</button><br><br>
-<button onmousedown="moveLeft()" onmouseup="stopMove()" ontouchstart = "moveLeft()">LEFT</button>
-<button onmousedown="moveRight()" onmouseup="stopMove()" ontouchstart = "moveRight()">RIGHT</button><br><br>
-<button onmousedown="moveDown()" onmouseup="stopMove()" ontouchstart = "moveDown()">DOWN</button>
-</div> 
-    -->
     <div style = "text-align:center; width:480px;">
     <p>UP DOWN LEFT RIGHT TO MOVE BITCH</p><br>
     <p> DONT DIE HAHAHAHA JUST KIDDING YOU'RE GONNA DIE</p><br>
-    <p>REFRESH TO RESTART BECAUSE FUCK YOU</p>
     </div>
 </body>   
 </html>
