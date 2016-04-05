@@ -6,6 +6,9 @@
 canvas {
     border: 1px solid #d3d3d3;
     background-color: #f1f1f1;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
 }
 
 </style>    
@@ -20,7 +23,7 @@ canvas {
     var myDownObstacles = []; 
     var myUpObstacles = [];
     function startGame() {
-        myGamePiece = new component(30, 30, "rgb(0, 101, 232)", 225, 120);
+        myGamePiece = new component(30, 30, "rgb(0, 101, 232)", 225, 225);
         myGameArea.start();
     }
     
@@ -28,7 +31,7 @@ canvas {
         canvas : document.createElement("canvas"),
         start : function() {
             this.canvas.width = 480;
-            this.canvas.height = 270;
+            this.canvas.height = 480;
             this.context = this.canvas.getContext("2d");
             document.body.insertBefore(this.canvas, document.body.childNodes[0]);
             this.frameNo = 0;
@@ -113,7 +116,7 @@ function updateGameArea() {
     myGameArea.frameNo += 1;
     if (myGameArea.frameNo == 1 || everyinterval(75)) {
         minSpawn = 0;
-        maxSpawn = 210;
+        maxSpawn = 420;
         loc = Math.floor(Math.random()*(maxSpawn-minSpawn+1)+minSpawn);
         myLeftObstacles.push(new component(60, 60, "rgb(217, 0, 0)", 480, loc)); //
         loc = Math.floor(Math.random()*(maxSpawn-minSpawn+1)+minSpawn);
@@ -123,7 +126,7 @@ function updateGameArea() {
         loc = Math.floor(Math.random()*(maxSpawn-minSpawn+1)+minSpawn);
         myDownObstacles.push(new component(60, 60, "rgb(217, 0, 0)", loc, -60));
         loc = Math.floor(Math.random()*(maxSpawn-minSpawn+1)+minSpawn);
-        myUpObstacles.push(new component(60, 60, "rgb(217, 0, 0)", loc, 270));
+        myUpObstacles.push(new component(60, 60, "rgb(217, 0, 0)", loc, 480));
     }
     for (i = 0; i < myLeftObstacles.length; i++) {
         myLeftObstacles[i].x += -3;
@@ -147,7 +150,7 @@ function updateGameArea() {
         if (myGamePiece.y > 0){      
             if (myGameArea.keys && myGameArea.keys[38]) {myGamePiece.speedY = -2.5; }
         }
-        if (myGamePiece.y + myGamePiece.height < 270){
+        if (myGamePiece.y + myGamePiece.height < 480){
             if (myGameArea.keys && myGameArea.keys[40]) {myGamePiece.speedY = 2.5; }
         }
         if (myGamePiece.x > 0) {
@@ -171,8 +174,8 @@ function updateGameArea() {
     }
 
 </script>
-    <div style = "text-align:center; width:480px;">
-    <p>UP DOWN LEFT RIGHT TO MOVE BITCH</p><br>
+    <div style = "text-align:center;">
+    <p>UP DOWN LEFT RIGHT TO MOVE</p>
     <p> DONT DIE HAHAHAHA JUST KIDDING YOU'RE GONNA DIE</p><br>
     </div>
 </body>   
