@@ -24,12 +24,15 @@
 
     var myGamePiece;
     var deathText;
+    var playerBool;
     var myLeftObstacles = []; 
     var myRightObstacles = [];
     var myDownObstacles = []; 
     var myUpObstacles = [];
+    
     function startGame() {
         myGamePiece = new component(30, 30, "rgb(0, 101, 232)", 225, 225);
+        playerBool = true;
         myGameArea.start();
     }
     
@@ -91,31 +94,67 @@
         }
     }
     
+    function clearScreen()
+    { 
+        
+        
+        for(var a = myLeftObstacles.length; a > 0; a--)
+        {
+            myLeftObstacles.pop();
+        }
+        for(var b = myRightObstacles.length; b > 0; b--)
+        {
+            myRightObstacles.pop();
+        }
+        for(var c = myUpObstacles.length; c > 0; c--)
+        {
+            myUpObstacles.pop();
+        }
+        for(var d = myDownObstacles.length; d > 0; d--)
+        {
+            myDownObstacles.pop();
+        }
+    }
+    
     function updateGameArea() {
         var x, y;
+        if (playerBool) {
         for (i = 0; i < myLeftObstacles.length; i++) {
             if (myGamePiece.crashWith(myLeftObstacles[i])) {
-                myGameArea.stop();
-                window.location = self.location;
+                //clearScreen();
+                playerBool = false;
+                myGamePiece = null;
+                //myGameArea.stop();
+                //window.location = self.location;
             } 
         }
         for (i = 0; i < myDownObstacles.length; i++){
             if (myGamePiece.crashWith(myDownObstacles[i])) {
-                myGameArea.stop();
-                window.location = self.location;
+                //clearScreen();
+                playerBool = false;
+                myGamePiece = null;
+                //myGameArea.stop();
+                //window.location = self.location;
             }
         }
         for (i = 0; i < myRightObstacles.length; i++){
             if (myGamePiece.crashWith(myRightObstacles[i])){
-                myGameArea.stop();
-                window.location = self.location;
+                //clearScreen();
+                playerBool = false;
+                myGamePiece = null;
+                //myGameArea.stop();
+                //window.location = self.location;
             }
         }
         for (i = 0; i < myUpObstacles.length; i++) {
             if (myGamePiece.crashWith(myUpObstacles[i])) {
-                myGameArea.stop();
-                window.location = self.location;
+                //clearScreen();
+                playerBool = false;
+                myGamePiece = null;
+                //myGameArea.stop();
+                //window.location = self.location;
             } 
+        }
         }
         myGameArea.clear();
         myGameArea.frameNo += 1;
@@ -149,6 +188,8 @@
             myUpObstacles[i].y += -3;
             myUpObstacles[i].update();
         }
+        if (playerBool)
+        {
             myGamePiece.speedX = 0;
             myGamePiece.speedY = 0; 
 
@@ -167,13 +208,26 @@
 
             myGamePiece.newPos();
             myGamePiece.update();
+        }
+        
+        if (myGameArea.keys && myGameArea.keys[82])
+        {
+            clearScreen();
+            myGameArea.stop();
+            myGamePiece = null;
+            startGame();
+        }
     }
     
     function everyinterval(n) {
         if ((myGameArea.frameNo / n) % 1 == 0) {return true;}
         return false;
     }
-
+    
+    function restartButton() {
+            
+    }
+    
 </script>
     <div style = "text-align:center;">
     <p>UP DOWN LEFT RIGHT TO MOVE</p>
